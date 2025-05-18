@@ -3,23 +3,26 @@
 mdata cmd code IPEndpoint
 mdata run nCase IPEndpoint Ts(ms) verbose
 
-cmd code:
-      0: NONE
-      1: Run
-      2: Test
-      3: Down
-      4: Reserve
-      5: Home
-      6: Center
-      7: Reserve
-      8: Best Stop
-      9: Stop
-     10: Reset
+mdata cmd code IPEndpoint
+mdata run case IPEndpoint Ts(ms) verbose
 
-nCase 0: M1 Turn Entry
+cmd code:
+      0: NONE   不执行操作
+      1: Run    运行状态, 接受输入并驱动平台运行
+      2: Test   运行内部测试
+      3: Down   平台归低位并停止
+      4: Reserve
+      5: Home   平台寻位
+      6: Center 平台中立（Home 零位置）
+      7: Reserve
+      8: Best Stop  先平衡而后归位
+      9: Stop   停止驱动, 紧急停止!
+     10: Reset  故障复位
+
+ case 0: M1 Turn Entry
       1: M2 Throttle Pulse
       2: M3 Pull/PushOver
       3: M4 helicopter shipborne Landing
 
-cargo run --bin mdata run 0 169.254.1.220     // start and run case 0
-cargo run --bin mdata cmd 3
+cargo run --bin mdata run 0 169.254.1.220   // start and run case 0
+cargo run --bin mdata cmd 3                 // put down (landing)
