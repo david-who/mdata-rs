@@ -1,0 +1,173 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'argment'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=argment",
+                    "--package=mdata"
+                ],
+                "filter": {
+                    "name": "argment",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "--cmd", "1",
+                "--target","127.0.0.1 10",
+                "--verbose", "false"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'argment'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=argment",
+                    "--package=mdata"
+                ],
+                "filter": {
+                    "name": "argment",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "--cmd", "0",
+                "--target","127.0.0.1 10",
+                "--verbose", "true"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'mdata'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=mdata",
+                    "--package=mdata"
+                ],
+                "filter": {
+                    "name": "mdata",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "run",
+                "1",
+                "192.168.0.10",
+                "10",
+                "false"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'mdata'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=mdata",
+                    "--package=mdata"
+                ],
+                "filter": {
+                    "name": "mdata",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+
+                "cmd",
+                "3",
+                "169.254.1.220"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'u8struct'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=u8struct",
+                    "--package=mdata"
+                ],
+                "filter": {
+                    "name": "u8struct",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'u8struct'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=u8struct",
+                    "--package=mdata"
+                ],
+                "filter": {
+                    "name": "u8struct",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'udpclient'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=udpclient",
+                    "--package=mdata"
+                ],
+                "filter": {
+                    "name": "udpclient",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'udpclient'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=udpclient",
+                    "--package=mdata"
+                ],
+                "filter": {
+                    "name": "udpclient",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

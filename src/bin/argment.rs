@@ -42,6 +42,12 @@ struct AddCmd {
 #[derive(Debug, FromArgs)]
 /// mdata test parameters
 struct MDP {
+    /// remote target
+    #[argh(option)]
+    target: Option<String>,
+    /// cmd
+    #[argh(option, default = "3")]
+    cmd: u32,
     /// time in ms between two ticks.
     #[argh(option, default = "1702")]
     port: u64,

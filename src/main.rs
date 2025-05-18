@@ -140,6 +140,69 @@ fn test_p6l(args: & std::vec::Vec<String>)
 
 }
 
+fn send_command(args: & std::vec::Vec<String>)
+{
+    let mut nCmd = 0; // ms
+    let mut nTms = 10; // ms
+    let mut verbose = true;
+    let mut remote = String::from("127.0.0.1:1702");
+
+    let nn= args.len();
+
+    // 1) Parse Params
+    if nn > 1 {
+        nCmd = match args[1].parse() {
+            Ok(n) => n,
+            _ => 0,
+        };
+    }
+
+    if nn > 2 {
+        remote.clone_from(&args[2]);
+
+        let n = match remote.rfind(':')
+        {
+            Some(n) => n,
+            _ => 0,
+        };
+        if n == 0 {
+            remote.push_str(":1702");
+        }
+    }
+
+    if nn > 3 {
+        nTms = match args[3].parse() {
+            Ok(n) => n,
+            _ => 10,
+        };
+    }
+
+    println!("Send Cmd {} ==> Target: {}", nCmd, remote);
+    
+    // 2) UDP Client
+    let udpclient = UDPClient::new("0.0.0.0:0").expect("cannot bind IPV4::Any!");
+
+    let mut P6L = TO_P6L {
+        nCmd : nCmd,
+        nPar : 0,
+        A9F  : [0.0;9],
+    };
+
+    //let (_, buff, _) = unsafe { A6L.align_to::<u8>() };
+    let buf: &[u8];
+    unsafe {
+        let pp = &P6L;
+        let pu8 = (pp as *const TO_P6L) as *const u8;
+        buf = std::slice::from_raw_parts(pu8, std::mem::size_of_val(pp));
+    }
+
+    match udpclient.SendTo(buf,remote.as_str()) {
+                Ok(..) => println!("OK ..."),
+                Err(..) => println!("Failed ..."),
+     };
+
+}
+
 
 fn main() {
     // let X = & [0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0];
@@ -151,11 +214,47 @@ fn main() {
 
     //let param: MDP = argh::from_env();
 
-    // test mdata
-    test_p6l(&std::env::args().collect());
+    let mut args: std::vec::Vec<String> = std::env::args().collect();
+    let cmd = args[1].as_str();
+    match cmd {
+        "run" => {
+            args.remove(1);
+            // test mdata
+            test_p6l(&args);
+            // pause: any key stroke ...
+            let mut stdin = io::stdin();
+            let _ = stdin.read(&mut [0u8]).unwrap();
+        }
+        "cmd" => { 
+            args.remove(1);
+            // only send command
+            send_command(&args);
+         }
+        _ =>  { println!("
+mdata cmd code IPEndpoint
+mdata run case IPEndpoint Ts(ms) verbose
 
-    // pause: any key stroke ...
-    let mut stdin = io::stdin();
-    let _ = stdin.read(&mut [0u8]).unwrap();
+cmd code:
+      0: NONE
+      1: Run
+      2: Test
+      3: Down
+      4: Reserve
+      5: Home
+      6: Center
+      7: Reserve
+      8: Best Stop
+      9: Stop
+     10: Reset
+
+nCase 0: M1 Turn Entry
+      1: M2 Throttle Pulse
+      2: M3 Pull/PushOver
+      3: M4 helicopter shipborne Landing
+
+cargo run --bin mdata run 0 169.254.1.220     // start and run case 0
+cargo run --bin mdata cmd 3
+        "); }
+    }
 
 }
